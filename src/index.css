@@ -1,13 +1,75 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.header {
+  border: 2px;
+  background-color: rgb(144, 183, 240);
+  padding: 2px;
+  text-align: left;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.viewtodo-table {
+  margin: 20px;
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(106, 255, 0, 0.955);
+  border: 1px solid;
+}
+
+.viewtodo-table th,
+.viewtodo-table td {
+  padding: 8px;
+  border: 1px solid;
+}
+
+.viewtodo-table th {
+  background-color: #3747f0;
+  color: white;
+}
+
+.headerbg-color {
+  background-color: #cda43f;
+}
+.text-white {
+  color: white;
+}
+.wrapper-color {
+  background-color: #dff4f7;
+}
+.text-right {
+  text-align: right;
+}
+
+.font-text {
+  font-weight: bold;
+  color: #483d41;
+}
+.text-shadow {
+  text-shadow: 2px 2px 2px #483d41;
+  color: #483d41;
+}
+.text-color {
+  color: #483d41;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #182fa4;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+.min-height {
+  min-height: 600px;
+}
+
+.todo-image {
+  height: 20px;
+  width: 20px;
+  background-blend-mode: color-burn;
 }
