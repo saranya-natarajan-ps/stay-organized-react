@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import EditTask from "./EditTask";
 import DeleteTask from "./DeleteTask";
+import "./ToggleButton.css";
+import Button from "react-bootstrap/esm/Button";
+import Modal from "react-bootstrap/Modal";
 
 function ViewToDo() {
   const [userList, setUserlist] = useState([]);
@@ -12,6 +15,12 @@ function ViewToDo() {
   const [priority, setPriority] = useState("all");
   const [editShow, setEditShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const [editId, setEditId] = useState("");
+  const [editIndex, setEditIndex] = useState(0);
+  const [selectedTask, setSelectedTask] = useState(null);
+  //const [taskItems, setTaskItems] = useState([]);
+  //const [elem, setElem] = useState(<></>);
 
   useEffect(() => {
     fetch("http://localhost:8083/api/users")
@@ -100,101 +109,173 @@ function ViewToDo() {
     }
   };
 
+  const handleToggleChange = () => {
+    setIsComplete(!isComplete);
+  };
+
+  const handleEdit = (index) => {
+    setEditShow(true);
+    setEditIndex(index);
+  };
+
+  const handleDelete = (taskId) => {
+    setSelectedTask(taskId);
+    setDeleteShow(true);
+  };
+
+  const hideDelete = () => {
+    setDeleteShow(false);
+    setSelectedTask(null);
+  };
+  const deleteTask = (taskId) => {
+    setFilter(filterList.filter((todo) => taskId != todo.id));
+  };
+
+  const hideEdit = () => {
+    setEditShow(false);
+    setEditIndex(null);
+  };
+
+  const updateEditedTask = (updatedTask) => {
+    const updatedTasks = filterList.map((task, index) =>
+      index === editIndex ? updatedTask : task
+    );
+    setFilter(updatedTasks);
+  };
+
+  const toggleCompletion = (taskId) => {
+    const updatedTasks = filterList.map((task) => {
+      if (task.id === taskId) {
+        const updatedTask = { ...task, completed: !task.completed };
+
+        // Update the backend
+        fetch(`http://localhost:8083/api/todos/${taskId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedTask),
+        }).catch((error) =>
+          console.error("Error updating task completion status:", error)
+        );
+
+        return updatedTask;
+      }
+      return task;
+    });
+
+    setFilter(updatedTasks);
+  };
+
   return (
-    <div className="container">
-      <title>View Todo Task</title>
-      <div className="row d-flex justify-content-center">
-        <h6 className="col-md-2 py-3 text-lg-end m-3"> Select User</h6>
-        <select
-          value={selectedUser}
-          onChange={handleUserChange}
-          className="col-md-6 py-0 m-3"
-        >
-          <option value="">select user</option>
-          {userList.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="row d-flex justify-content-between ">
+    <div className="container min-height">
+      <h5 className="m-2">View Todo Task</h5>
+      <div className="col-md-4 mt-4">
         <input
-          className="col-md-4"
-          placeholder="Search by description"
+          className="p-2 m-2 form-control"
+          placeholder="Search By Description"
           id="searchBar"
           onChange={(e) => requestSearch(e.target.value)}
         ></input>
-        <div className="col-md-4">
+      </div>
+      <form className="row g-3 needs-validation" noValidate>
+        <div className="col-md-6">
           <select
-            value={selectedCategory}
-            className="col-md-5 py-0 m-3"
-            onChange={handleCatChange}
+            value={selectedUser}
+            onChange={handleUserChange}
+            className="p-2 m-2 mt-3 col-md-6"
           >
-            <option key="0" value="">
-              select Category
-            </option>
-
-            {categoryList.map((category) => (
-              <option key={category.id} value={category.name}>
-                {category.name}
+            <option value="">Select User</option>
+            {userList.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.name}
               </option>
             ))}
           </select>
+
+          <div className="col-md-12">
+            <select
+              value={selectedCategory}
+              className="p-2 m-2 mt-4 col-md-6"
+              onChange={handleCatChange}
+            >
+              <option key="0" value="">
+                Filter By Category
+              </option>
+
+              {categoryList.map((category) => (
+                <option key={category.id} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="col-md-8">
+            <h6 className="p-2 m-2 mt-4 m-lg-0 form-control border-0">
+              Sort by Priority
+            </h6>
+            <div className="form-check form-check-inline m-2">
+              <input
+                type="radio"
+                className="form-check-input"
+                name="priority"
+                value="low"
+                id="low"
+                checked={priority === "low"}
+                onChange={handlePriorityChange}
+              />
+              <label className="form-check-label" htmlFor="low">
+                Low
+              </label>
+            </div>
+            <div className="form-check form-check-inline">
+              <input
+                type="radio"
+                className="form-check-input"
+                name="priority"
+                value="medium"
+                id="medium"
+                checked={priority === "medium"}
+                onChange={handlePriorityChange}
+              />
+
+              <label className="form-check-label" htmlFor="medium">
+                Medium
+              </label>
+            </div>
+            <div className="form-check form-check-inline">
+              <input
+                type="radio"
+                className="form-check-input"
+                name="priority"
+                value="high"
+                id="high"
+                checked={priority === "high"}
+                onChange={handlePriorityChange}
+              />
+              <label className="form-check-label" htmlFor="high">
+                High
+              </label>
+            </div>
+            <div className="form-check form-check-inline">
+              <input
+                type="radio"
+                className="form-check-input"
+                name="priority"
+                value="all"
+                id="all"
+                checked={priority === "all"}
+                onChange={handlePriorityChange}
+              />
+
+              <label className="form-check-label" htmlFor="all">
+                All
+              </label>
+            </div>
+          </div>
         </div>
-        <div className="col-md-4 d-flex justify-content-around  ">
-          <h6>Sort by Priority</h6>
-          <input
-            type="radio"
-            name="priority"
-            value="low"
-            id="low"
-            checked={priority === "low"}
-            onChange={handlePriorityChange}
-          />
-          <label htmlFor="low">Low</label>
-          <input
-            type="radio"
-            name="priority"
-            value="medium"
-            id="medium"
-            checked={priority === "medium"}
-            onChange={handlePriorityChange}
-          />
-
-          <label htmlFor="medium">Medium</label>
-          <input
-            type="radio"
-            name="priority"
-            value="high"
-            id="high"
-            checked={priority === "high"}
-            onChange={handlePriorityChange}
-          />
-          <label htmlFor="high">High</label>
-          <input
-            type="radio"
-            name="priority"
-            value="all"
-            id="all"
-            checked={priority === "all"}
-            onChange={handlePriorityChange}
-          />
-
-          <label htmlFor="all">All</label>
-        </div>
-        {/*<svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          fill="currentColor"
-          className="bi bi-search col-md-1 d-flex align-content-lg-start"
-          viewBox="0 0 16 16"
-        >
-          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-        </svg>*/}
-      </div>
-
+      </form>
       <table display="none" className="table mt-5 " id="toDoTable">
         <thead>
           <tr>
@@ -208,17 +289,30 @@ function ViewToDo() {
           </tr>
         </thead>
         <tbody>
-          {filterList.map((todo) => (
+          {filterList.map((todo, index) => (
             <tr key={todo.id} value={todo.id}>
               <td>{todo.description}</td>
               <td>{todo.deadline}</td>
-              <td>{todo.completed ? "Yes" : "No"}</td>
+              <td>
+                <Button
+                  variant={todo.completed ? "success" : "danger"}
+                  onClick={() => toggleCompletion(todo.id)}
+                >
+                  {todo.completed ? "Completed" : "In Progress"}
+                </Button>
+              </td>
+              {/*<td>{todo.completed ? "Yes" : "No"}</td>*/}
               <td>{todo.category}</td>
               <td>{todo.priority}</td>
               <td>
                 <button
-                  className="btn btn-warning "
-                  onClick={() => setEditShow(true)}
+                  className="headerbg-color border-0 p-2"
+                  onClick={() => {
+                    //editTask(todo.id);
+                    //}}
+                    handleEdit(index);
+                  }}
+                  id={todo.id}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -231,16 +325,23 @@ function ViewToDo() {
                     <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001" />
                   </svg>
                 </button>
-                <EditTask
-                  show={editShow}
-                  onHide={() => setEditShow(false)}
-                  taskId={todo.id}
-                />
+
+                {console.log(editIndex)}
+
+                {
+                  <EditTask
+                    show={editShow}
+                    onHide={hideEdit}
+                    editindex={editIndex}
+                    todolist={filterList}
+                    onTaskUpdate={updateEditedTask}
+                  />
+                }
               </td>
               <td>
                 <button
-                  className="btn btn-warning"
-                  onClick={() => setDeleteShow(true)}
+                  className="headerbg-color border-0 p-2"
+                  onClick={() => handleDelete(todo.id)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -256,9 +357,9 @@ function ViewToDo() {
                 {
                   <DeleteTask
                     show={deleteShow}
-                    onHide={() => setDeleteShow(false)}
-                    taskid={todo.id}
-                    setUser={() => setSelectedUser("")}
+                    onHide={hideDelete}
+                    taskId={selectedTask}
+                    onDelete={deleteTask}
                   />
                 }
               </td>

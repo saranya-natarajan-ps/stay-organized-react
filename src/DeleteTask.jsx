@@ -1,23 +1,28 @@
+import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-function DeleteTask(props) {
+const DeleteTask = (props) => {
+  console.log(props);
+
   const remove = () => {
-    fetch(`http://localhost:8083/api/todos/${props.taskid}`, {
+    fetch(`http://localhost:8083/api/todos/${props.taskId}`, {
       method: "DELETE",
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        console.info("Task Deleted Successfully");
+      .then((response) => {
+        if (response.ok) {
+          props.onDelete(props.taskId);
+          props.onHide();
+        } else {
+          console.error("Error deleting task:", response.statusText);
+        }
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => console.error("Error deleting task:", error));
   };
   return (
     <Modal
-      {...props}
+      show={props.show}
+      onHide={props.onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -27,28 +32,17 @@ function DeleteTask(props) {
           Delete Task
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body className="bg bg-danger">
+      <Modal.Body className="bg bg-danger-subtle">
         Are you sure that you want to delete this task?
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          className="btn btn-secondary"
-          onClick={() => {
-            remove();
-            {
-              props.onHide();
-            }
-            {
-              props.setUser();
-            }
-          }}
-        >
-          Confirm
+        <Button onClick={remove}>Confirm</Button>
+        <Button onClick={props.onHide} className="btn btn-secondary">
+          Cancel
         </Button>
-        <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default DeleteTask;

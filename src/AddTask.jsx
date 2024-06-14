@@ -7,6 +7,7 @@ function AddTask() {
   const [categoryList, setCategoryList] = useState([]);
   const [taskComplete, setTaskComplete] = useState(false);
   const [initialflag, setInitialFlag] = useState(true);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:8083/api/users")
@@ -41,12 +42,14 @@ function AddTask() {
       .then((data) => {
         console.log(data);
         setTaskComplete(true);
+        setShowConfirmation(true);
+        cleanUp(); // Move cleanup to after task completion
       })
       .catch((err) => {
-        console.log(err.message);
+        console.error("Error adding task:", err.message);
         setTaskComplete(false);
+        setShowConfirmation(true);
       });
-    cleanUp();
   }
 
   function cleanUp() {
@@ -55,16 +58,18 @@ function AddTask() {
     document.getElementById("description").value = "";
     document.getElementById("deadline").value = "";
     document.getElementById("priority").value = "Low";
+    setInitialFlag(true);
   }
 
   return (
-    <div className="container col-md-6 mt-5">
+    <div className="container col-md-12 mt-5 min-height">
       <form>
-        <div className="form-group row">
-          <label htmlFor="users" className="col-sm-2 col-form-label fw-bold">
+        <h5 className="m-4 m-lg-0">Add Task</h5>
+        <div className="form-group row mt-4">
+          <label htmlFor="users" className="col-md-2 col-form-label fw-bold">
             User
           </label>
-          <div className="col-sm-10">
+          <div className="col-md-4">
             <select className="form-select" id="userList" name="Users">
               {userList.map((user) => (
                 <option key={user.id} value={user.id}>
@@ -75,10 +80,10 @@ function AddTask() {
           </div>
         </div>
         <div className="form-group row mt-2">
-          <label htmlFor="category" className="col-sm-2 col-form-label fw-bold">
+          <label htmlFor="category" className="col-md-2 col-form-label fw-bold">
             Category
           </label>
-          <div className="col-sm-10">
+          <div className="col-md-4">
             <select className="form-select" id="categoryList" name="category">
               {categoryList.map((category) => (
                 <option key={category.id} value={category.name}>
@@ -91,11 +96,11 @@ function AddTask() {
         <div className="form-group row mt-2">
           <label
             htmlFor="description"
-            className="col-sm-2 col-form-label fw-bold"
+            className="col-md-2 col-form-label fw-bold"
           >
             Description
           </label>
-          <div className="col-sm-10">
+          <div className="col-md-4">
             <textarea
               className="form-control"
               id="description"
@@ -105,19 +110,19 @@ function AddTask() {
         </div>
 
         <div className="form-group row mt-2">
-          <label htmlFor="deadline" className="col-sm-2 col-form-label fw-bold">
+          <label htmlFor="deadline" className="col-md-2 col-form-label fw-bold">
             Deadline
           </label>
-          <div className="col-sm-10">
+          <div className="col-md-4">
             <input type="date" className="form-control-file" id="deadline" />
           </div>
         </div>
 
         <div className="form-group row mt-2">
-          <label htmlFor="priority" className="col-sm-2 col-form-label fw-bold">
+          <label htmlFor="priority" className="col-md-2 col-form-label fw-bold">
             Priority
           </label>
-          <div className="col-sm-10">
+          <div className="col-md-4">
             <select className="form-select" id="priority" name="priority">
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
@@ -127,8 +132,8 @@ function AddTask() {
         </div>
 
         <div className="form-group row mt-3">
-          <div className="col-sm-2"></div>
-          <div className="col-sm-10">
+          <div className="col-md-2"></div>
+          <div className="col-md-4">
             <button
               type="button"
               id="addTodoBtn"
@@ -149,6 +154,28 @@ function AddTask() {
           </div>
         </div>
       </form>
+
+      {/* Confirmation Modal */}
+      <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Task Addition Status</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {taskComplete ? (
+            <p>Task Added Successfully!</p>
+          ) : (
+            <p>Failed to add task. Please try again later.</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowConfirmation(false)}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

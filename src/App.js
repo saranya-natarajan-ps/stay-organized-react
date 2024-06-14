@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import AddTask from "./AddTask";
-import RegisterUser from "./RegisterUser";
 import ViewToDo from "./ViewToDo";
 import Header from "./inc/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Footer from "./inc/Footer";
+import RegisterUser from "./RegisterUser";
+//import TestRegister from "./TestRegister";
 
 function App() {
   return (
