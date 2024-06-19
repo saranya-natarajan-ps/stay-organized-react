@@ -19,7 +19,7 @@ function HomePage() {
           being determined but flexible.
           <br></br>
           <br></br>
-          Here in this website, we have the following to keep the Task's
+          Here in this Website, we have the following to keep the Task's
           organized.
           <br></br>
           <br></br>
@@ -27,28 +27,28 @@ function HomePage() {
             <li> Register New User</li>
             <span>
               This page helps to register a new user with unique username and
-              password
+              password.
             </span>
             <br />
             <br />
             <li> Add Task</li>
             <span>
-              This Page helps adding new todo task for an existing user
+              This Page helps adding new todo task for an existing user.
             </span>
             <br />
             <br />
             <li> View Task</li>
             <span>
               This page helps helps viewing the task list for an user with
-              filters
+              filters.
             </span>
             <br />
             <br />
 
             <li> Edit Task / Delete Task</li>
             <span>
-              This is additional functionalithy in the view task page, where an
-              user can edit, delete or toggle status for a task
+              This is additional functionality in the view task page, where an
+              user can edit, delete or toggle status for a task.
             </span>
           </ul>
         </div>
