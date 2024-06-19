@@ -19,31 +19,38 @@ function HomePage() {
           being determined but flexible.
           <br></br>
           <br></br>
-          The first step to self-organization is obtaining a habit of making
-          plans. It can be beneficial to take your time and start your diary. It
-          is a good idea to make a plan of your one-year and five-year goals at
-          the beginning. It may seem superfluous but it is an effective way to
-          remember about the most important life goals and remain determined.
+          Here in this website, we have the following to keep the Task's
+          organized.
           <br></br>
           <br></br>
-          The second step is to follow the plan created. It is inappropriate to
-          put off important tasks for later. This ‘later’ can never come. Hence,
-          if there are important things to do, it is essential to do everything
-          according to the schedule in the diary. It is important to remember
-          that if you put off something, one day you will have a dozen of
-          unaccomplished projects which will lead to failure.
-          <br></br>
-          <br></br>
-          The third step on the way to efficiency is making schedule. Every
-          person has a variety of arrangements each week. The diary has to
-          include this information as well. Write down precise time of the
-          meeting, place where it will take place and the name of the person you
-          are meeting. It can be a very good idea to predict time the meeting
-          will last. This will help you stay on track and be able to plan other
-          things to do. Again, it is inappropriate to spend more time at a
-          meeting if you have other important tasks. Finally, it is important to
-          look into the diary every morning to make sure you remember about all
-          arrangements and things to do.
+          <ul>
+            <li> Register New User</li>
+            <span>
+              This page helps to register a new user with unique username and
+              password
+            </span>
+            <br />
+            <br />
+            <li> Add Task</li>
+            <span>
+              This Page helps adding new todo task for an existing user
+            </span>
+            <br />
+            <br />
+            <li> View Task</li>
+            <span>
+              This page helps helps viewing the task list for an user with
+              filters
+            </span>
+            <br />
+            <br />
+
+            <li> Edit Task / Delete Task</li>
+            <span>
+              This is additional functionalithy in the view task page, where an
+              user can edit, delete or toggle status for a task
+            </span>
+          </ul>
         </div>
         <div className="col-md-6 mt-2">
           <div

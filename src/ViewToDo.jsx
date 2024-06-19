@@ -170,14 +170,7 @@ function ViewToDo() {
   return (
     <div className="container min-height">
       <h5 className="m-2">View Todo Task</h5>
-      <div className="col-md-4 mt-4">
-        <input
-          className="p-2 m-2 form-control"
-          placeholder="Search By Description"
-          id="searchBar"
-          onChange={(e) => requestSearch(e.target.value)}
-        ></input>
-      </div>
+
       <form className="row g-3 needs-validation" noValidate>
         <div className="col-md-6">
           <select
@@ -192,6 +185,14 @@ function ViewToDo() {
               </option>
             ))}
           </select>
+          <div className="col-md-6 mt-4">
+            <input
+              className="p-2 m-2 form-control"
+              placeholder="Search By Description"
+              id="searchBar"
+              onChange={(e) => requestSearch(e.target.value)}
+            ></input>
+          </div>
 
           <div className="col-md-12">
             <select

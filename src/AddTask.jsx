@@ -156,11 +156,17 @@ function AddTask() {
       </form>
 
       {/* Confirmation Modal */}
-      <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}>
+      <Modal
+        show={showConfirmation}
+        onHide={() => setShowConfirmation(false)}
+        centered
+      >
         <Modal.Header closeButton>
-          <Modal.Title>Task Addition Status</Modal.Title>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Task Addition Status
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="bg bg-danger-subtle">
           {taskComplete ? (
             <p>Task Added Successfully!</p>
           ) : (

@@ -240,20 +240,28 @@ function RegisterUser() {
       </form>
 
       {/* Confirmation Modal */}
-      <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}>
+      <Modal
+        show={showConfirmation}
+        onHide={() => setShowConfirmation(false)}
+        centered
+      >
         <Modal.Header closeButton>
-          <Modal.Title>Confirm User Registration</Modal.Title>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Confirm User Registration
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to register this user?</Modal.Body>
+        <Modal.Body className="bg bg-danger-subtle">
+          Are you sure you want to register this user?
+        </Modal.Body>
         <Modal.Footer>
+          <Button variant="primary" onClick={confirmAddUser}>
+            Register User
+          </Button>
           <Button
             variant="secondary"
             onClick={() => setShowConfirmation(false)}
           >
             Cancel
-          </Button>
-          <Button variant="primary" onClick={confirmAddUser}>
-            Register User
           </Button>
         </Modal.Footer>
       </Modal>
